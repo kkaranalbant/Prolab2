@@ -4,17 +4,27 @@
  */
 package prolab2;
 
-/**
- *
- * @author kaan
- */
-public class Prolab2 {
+import javax.swing.*;
+import prolab2.service.WarMechanic;
+import prolab2.gui.GameFrame;
 
-    /**
-     * @param args the command line arguments
-     */
+
+public class Prolab2 {
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            WarMechanic warMechanic = WarMechanic.getInstance(5, 20, 0);
+            warMechanic.init();
+
+            GameFrame frame = new GameFrame(warMechanic);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
-    
 }

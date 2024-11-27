@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package prolab2.service;
-
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +21,7 @@ import prolab2.model.Siha;
 import prolab2.model.VehicleType;
 import prolab2.model.WarVehicle;
 
+
 /**
  *
  * @author kaan
@@ -35,7 +36,7 @@ public class WarMechanic {
 
     private Random random;
 
-    private Map<Integer, TriFunction<Integer, Long, Boolean, WarVehicle>> valueMethodMap;
+    private Map<Integer, TriFunction<Integer, Long, Boolean, WarVehicle>> valueMethodMap = new HashMap<>(); //hata düzelttim
 
     private Integer humanScore;
 
@@ -52,6 +53,9 @@ public class WarMechanic {
     private List<WarVehicle> vehicles;
 
     private WarMechanic(Integer maxStepNumber, Integer scoreBound, Integer defaultLevelPoint) {
+
+        valueMethodMap = new HashMap<>();
+
         currentStepNumber = 0;
         valueMethodMap.put(1, Jet::createJet);
         valueMethodMap.put(2, Obus::createObus);
@@ -62,7 +66,7 @@ public class WarMechanic {
         random = new Random();
         humanScore = 0;
         computerScore = 0;
-        vehicles = new ArrayList();
+        vehicles = new ArrayList<>(); //hatayı düzelttim
         idOrigin = 1000L;
         idBound = 10000L;
         this.scoreBound = scoreBound;
@@ -406,5 +410,14 @@ public class WarMechanic {
     public Integer getCurrentStepNumber() {
         return currentStepNumber;
     }
+
+    public Integer getHumanScore() {
+        return humanScore;
+    }
+
+    public Integer getComputerScore() {
+        return computerScore;
+    }
+
 
 }
