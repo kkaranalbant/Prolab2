@@ -155,7 +155,7 @@ public class WarMechanic {
     }
 
     public boolean isWarOverByStepNumber() {
-        return currentStepNumber > maxStepNumber;
+        return currentStepNumber >= maxStepNumber;
     }
 
     public boolean isWarOverByVehiclesForHuman() {
