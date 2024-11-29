@@ -82,13 +82,11 @@ public class GameFrame extends JFrame {
     }
 
     private void updateGameState() {
-        // Clear existing cards
         playerCardsPanel.removeAll();
         computerCardsPanel.removeAll();
         playerCardPanels.clear();
         computerCardPanels.clear();
 
-        // Add player cards
         for (WarVehicle vehicle : warMechanic.getVehicles()) {
             if (vehicle.getIsForHuman()) {
                 VehicleCardPanel cardPanel = new VehicleCardPanel(vehicle, true);
@@ -96,17 +94,16 @@ public class GameFrame extends JFrame {
                 playerCardPanels.add(cardPanel);
                 playerCardsPanel.add(cardPanel);
             } else {
+                // Bilgisayar kartlarını kapalı göster
                 VehicleCardPanel cardPanel = new VehicleCardPanel(vehicle, false);
                 computerCardPanels.add(cardPanel);
                 computerCardsPanel.add(cardPanel);
             }
         }
 
-        // Update scores
         playerScoreLabel.setText("Player Score: " + warMechanic.getHumanScore());
         computerScoreLabel.setText("Computer Score: " + warMechanic.getComputerScore());
 
-        // Refresh the display
         revalidate();
         repaint();
     }
@@ -162,7 +159,9 @@ public class GameFrame extends JFrame {
         }
 
         for (WarVehicle card : computerCards) {
-            computerBattleCards.add(new VehicleCardPanel(card, false));
+            // Bilgisayar kartlarını savaş alanında göster
+            VehicleCardPanel cardPanel = new VehicleCardPanel(card, true);
+            computerBattleCards.add(cardPanel);
         }
 
         battleAreaPanel.add(playerBattleCards);

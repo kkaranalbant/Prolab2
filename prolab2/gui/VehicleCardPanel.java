@@ -22,6 +22,11 @@ public class VehicleCardPanel extends JPanel {
     }
 
     private void initializeComponents() {
+        if (!isPlayerCard) {
+            // Bilgisayar kartları için boş bırak
+            return;
+        }
+
         // Card title
         JLabel nameLabel = new JLabel(vehicle.getName());
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -72,6 +77,24 @@ public class VehicleCardPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        if (!isPlayerCard) {
+            // Arka yüz rengi
+            g.setColor(new Color(50, 50, 150));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.WHITE);
+            g.drawString("WAR CARD", getWidth()/2 - 30, getHeight()/2);
+
+            // Eğer kart aktif değilse üzerine gri overlay ekle
+            if (!vehicle.getIsActive()) {
+                g.setColor(new Color(100, 100, 100, 150));
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(Color.RED);
+                g.drawString("ELIMINATED", getWidth()/2 - 35, getHeight()/2 + 20);
+            }
+            return;
+        }
+
+        // Oyuncu kartları için mevcut görünüm
         if (!vehicle.getIsActive()) {
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRect(0, 0, getWidth(), getHeight());
