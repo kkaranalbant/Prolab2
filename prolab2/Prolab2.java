@@ -20,7 +20,7 @@ public class Prolab2 {
         SwingUtilities.invokeLater(() -> {
             // Kullanıcıdan maksimum adım sayısını al
             String input = JOptionPane.showInputDialog(null,
-                    "Lütfen maksimum adım sayısını girin (1-10 arası):",
+                    "Lütfen maksimum adım sayısını girin (1-20 arası):",
                     "Adım Sayısı",
                     JOptionPane.QUESTION_MESSAGE);
 
@@ -33,9 +33,9 @@ public class Prolab2 {
                 int maxSteps = Integer.parseInt(input.trim());
 
                 // Geçerlilik kontrolü
-                if (maxSteps < 1 || maxSteps > 10) {
+                if (maxSteps < 1 || maxSteps > 20) {
                     JOptionPane.showMessageDialog(null,
-                            "Geçersiz adım sayısı! 1-10 arası bir değer giriniz.",
+                            "Geçersiz adım sayısı! 1-20 arası bir değer giriniz.",
                             "Hata",
                             JOptionPane.ERROR_MESSAGE);
                     System.exit(0);
