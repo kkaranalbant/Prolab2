@@ -18,13 +18,11 @@ public class Prolab2 {
         }
 
         SwingUtilities.invokeLater(() -> {
-            // Kullanıcıdan maksimum adım sayısını al
             String input = JOptionPane.showInputDialog(null,
                     "Lütfen maksimum adım sayısını girin (1-20 arası):",
                     "Adım Sayısı",
                     JOptionPane.QUESTION_MESSAGE);
 
-            // İptal edilirse veya boş girilirse varsayılan değer 5 olsun
             if (input == null || input.trim().isEmpty()) {
                 System.exit(0);
             }
@@ -32,7 +30,6 @@ public class Prolab2 {
             try {
                 int maxSteps = Integer.parseInt(input.trim());
 
-                // Geçerlilik kontrolü
                 if (maxSteps < 1 || maxSteps > 20) {
                     JOptionPane.showMessageDialog(null,
                             "Geçersiz adım sayısı! 1-20 arası bir değer giriniz.",
@@ -41,11 +38,9 @@ public class Prolab2 {
                     System.exit(0);
                 }
 
-                // Oyun mekaniklerini başlat
                 WarMechanic warMechanic = WarMechanic.getInstance(maxSteps, 20, 0);
                 warMechanic.init();
 
-                // Ana pencereyi oluştur ve göster
                 GameFrame frame = new GameFrame(warMechanic);
                 frame.pack();
                 frame.setLocationRelativeTo(null);

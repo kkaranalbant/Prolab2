@@ -39,7 +39,6 @@ public class GameFrame extends JFrame {
     }
 
     private void initializeComponents() {
-        // Score panel
         JPanel scorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         playerScoreLabel = new JLabel("Player Score: 0");
         computerScoreLabel = new JLabel("Computer Score: 0");
@@ -47,19 +46,15 @@ public class GameFrame extends JFrame {
         scorePanel.add(computerScoreLabel);
         add(scorePanel, BorderLayout.NORTH);
 
-        // Computer cards area
         computerCardsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         computerCardsPanel.setBorder(BorderFactory.createTitledBorder("Computer's Cards"));
 
-        // Battle area
         battleAreaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         battleAreaPanel.setBorder(BorderFactory.createTitledBorder("Battle Area"));
 
-        // Player cards area
         playerCardsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         playerCardsPanel.setBorder(BorderFactory.createTitledBorder("Your Cards"));
 
-        // Control panel
         JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         playButton = new JButton("Play Selected Cards");
         playButton.addActionListener(e -> handlePlayButtonClick());
@@ -69,7 +64,6 @@ public class GameFrame extends JFrame {
     }
 
     private void layoutComponents() {
-        // Main game area panel
         JPanel gameAreaPanel = new JPanel();
         gameAreaPanel.setLayout(new BoxLayout(gameAreaPanel, BoxLayout.Y_AXIS));
         gameAreaPanel.add(computerCardsPanel);
@@ -94,7 +88,6 @@ public class GameFrame extends JFrame {
                 playerCardPanels.add(cardPanel);
                 playerCardsPanel.add(cardPanel);
             } else {
-                // Bilgisayar kartlarını kapalı göster
                 VehicleCardPanel cardPanel = new VehicleCardPanel(vehicle, false);
                 computerCardPanels.add(cardPanel);
                 computerCardsPanel.add(cardPanel);
@@ -139,7 +132,6 @@ public class GameFrame extends JFrame {
                 System.exit(0);
             }
 
-            // Reset selection and update state
             selectedCards.clear();
             updateGameState();
 
@@ -159,7 +151,6 @@ public class GameFrame extends JFrame {
         }
 
         for (WarVehicle card : computerCards) {
-            // Bilgisayar kartlarını savaş alanında göster
             VehicleCardPanel cardPanel = new VehicleCardPanel(card, true);
             computerBattleCards.add(cardPanel);
         }

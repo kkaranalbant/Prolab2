@@ -23,20 +23,16 @@ public class VehicleCardPanel extends JPanel {
 
     private void initializeComponents() {
         if (!isPlayerCard) {
-            // Bilgisayar kartları için boş bırak
             return;
         }
 
-        // Card title
         JLabel nameLabel = new JLabel(vehicle.getName());
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
-        // Vehicle type
         JLabel typeLabel = new JLabel("Type: " + vehicle.getVehicleType());
         typeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Stats
         JLabel attackLabel = new JLabel("Attack: " + vehicle.getAttack());
         attackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -46,7 +42,6 @@ public class VehicleCardPanel extends JPanel {
         JLabel levelLabel = new JLabel("Level: " + vehicle.getLevelPoint());
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Add components
         add(Box.createRigidArea(new Dimension(0, 5)));
         add(nameLabel);
         add(Box.createRigidArea(new Dimension(0, 5)));
@@ -57,7 +52,6 @@ public class VehicleCardPanel extends JPanel {
         add(levelLabel);
         add(Box.createRigidArea(new Dimension(0, 5)));
 
-        // Advantages
         if (!vehicle.getAdvantageTypes().isEmpty()) {
             JLabel advantagesTitle = new JLabel("Advantages:");
             advantagesTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -78,13 +72,11 @@ public class VehicleCardPanel extends JPanel {
         super.paintComponent(g);
 
         if (!isPlayerCard) {
-            // Arka yüz rengi
             g.setColor(new Color(50, 50, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
             g.drawString("WAR CARD", getWidth()/2 - 30, getHeight()/2);
 
-            // Eğer kart aktif değilse üzerine gri overlay ekle
             if (!vehicle.getIsActive()) {
                 g.setColor(new Color(100, 100, 100, 150));
                 g.fillRect(0, 0, getWidth(), getHeight());
@@ -94,7 +86,6 @@ public class VehicleCardPanel extends JPanel {
             return;
         }
 
-        // Oyuncu kartları için mevcut görünüm
         if (!vehicle.getIsActive()) {
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRect(0, 0, getWidth(), getHeight());
