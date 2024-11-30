@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package prolab2.service;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,7 +21,6 @@ import prolab2.model.Sida;
 import prolab2.model.Siha;
 import prolab2.model.VehicleType;
 import prolab2.model.WarVehicle;
-
 
 /**
  *
@@ -66,7 +66,7 @@ public class WarMechanic {
         random = new Random();
         humanScore = 0;
         computerScore = 0;
-        vehicles = new ArrayList<>(); //hatayı düzelttim
+        vehicles = new ArrayList<>();
         idOrigin = 1000L;
         idBound = 10000L;
         this.scoreBound = scoreBound;
@@ -115,8 +115,32 @@ public class WarMechanic {
             }
             for (WarVehicle vehicle : choosenVehicles) {
                 for (WarVehicle choosenComputerVehicle : choosenComputerVehicles) {
-                    choosenComputerVehicle.setDefence(choosenComputerVehicle.getDefence() - getAttackAmount(vehicle, choosenComputerVehicle));
-                    vehicle.setDefence(vehicle.getDefence() - getAttackAmount(choosenComputerVehicle, vehicle));
+                    if (choosenComputerVehicle.getIsActive() && vehicle.getIsActive()) {
+                        choosenComputerVehicle.setDefence(choosenComputerVehicle.getDefence() - getAttackAmount(vehicle, choosenComputerVehicle));
+                        if (choosenComputerVehicle.getDefence() <= 0) {
+                            if (choosenComputerVehicle.getDefence() <= 0) {
+                                vehicle.setLevelPoint(vehicle.getLevelPoint() + 10);
+                                humanScore += 10;
+                            } else {
+                                vehicle.setLevelPoint(vehicle.getLevelPoint() + choosenComputerVehicle.getLevelPoint());
+                                humanScore += choosenComputerVehicle.getLevelPoint();
+                            }
+                            choosenComputerVehicle.setIsActive(false);
+                            continue;
+                        }
+                        vehicle.setDefence(vehicle.getDefence() - getAttackAmount(choosenComputerVehicle, vehicle));
+                        if (vehicle.getDefence() <= 0) {
+                            if (vehicle.getLevelPoint() < 10) {
+                                choosenComputerVehicle.setLevelPoint(choosenComputerVehicle.getLevelPoint() + 10);
+                                computerScore += 10;
+                            } else {
+                                choosenComputerVehicle.setLevelPoint(choosenComputerVehicle.getLevelPoint() + vehicle.getLevelPoint());
+                                computerScore += vehicle.getLevelPoint();
+                            }
+                            vehicle.setIsActive(false);
+                        }
+
+                    }
                 }
             }
 
@@ -126,19 +150,7 @@ public class WarMechanic {
             }
             WarVehicle choosenComputerVehicle = choosenComputerVehicles.get(0);
             WarVehicle vehicle = choosenVehicles.get(0);
-            vehicle.setDefence(vehicle.getDefence() - getAttackAmount(choosenComputerVehicle, vehicle));
             choosenComputerVehicle.setDefence(choosenComputerVehicle.getDefence() - getAttackAmount(vehicle, choosenComputerVehicle));
-            if (vehicle.getDefence() <= 0) {
-                int bonusAmount = 0;
-                if (vehicle.getLevelPoint() < 10) {
-                    bonusAmount = 10;
-                } else {
-                    bonusAmount = vehicle.getLevelPoint();
-                }
-                computerScore += bonusAmount;
-                choosenComputerVehicle.setLevelPoint(choosenComputerVehicle.getLevelPoint() + bonusAmount);
-
-            }
             if (choosenComputerVehicle.getDefence() <= 0) {
                 int bonusAmount = 0;
                 if (choosenComputerVehicle.getLevelPoint() < 10) {
@@ -148,9 +160,27 @@ public class WarMechanic {
                 }
                 humanScore += bonusAmount;
                 vehicle.setLevelPoint(vehicle.getLevelPoint() + bonusAmount);
+                choosenComputerVehicle.setIsActive(false);
             }
-            controlVehicles(List.of(choosenComputerVehicle, vehicle));
+            if (choosenComputerVehicle.getIsActive()) {
+                vehicle.setDefence(vehicle.getDefence() - getAttackAmount(choosenComputerVehicle, vehicle));
+                if (vehicle.getDefence() <= 0) {
+                    int bonusAmount = 0;
+                    if (vehicle.getLevelPoint() < 10) {
+                        bonusAmount = 10;
+                    } else {
+                        bonusAmount = vehicle.getLevelPoint();
+                    }
+                    computerScore += bonusAmount;
+                    choosenComputerVehicle.setLevelPoint(choosenComputerVehicle.getLevelPoint() + bonusAmount);
+                    vehicle.setIsActive(false);
+                }
+            }
         }
+//        List<WarVehicle> allVehicles = new ArrayList();
+//        allVehicles.addAll(choosenComputerVehicles);
+//        allVehicles.addAll(choosenVehicles);
+//        controlVehicles(allVehicles);
         currentStepNumber++;
     }
 
@@ -376,9 +406,9 @@ public class WarMechanic {
     public List<WarVehicle> getRandomWarVehiclesForFirstRound() {
         List<WarVehicle> randomVehiclesForFirstRound = new LinkedList();
         while (randomVehiclesForFirstRound.size() != 3) {
-            int randomIndex = random.nextInt(0, vehicles.size() + 1);
+            int randomIndex = random.nextInt(0, vehicles.size());
             WarVehicle vehicle = vehicles.get(randomIndex);
-            if (!vehicle.getIsForHuman() && vehicle.getIsActive()) {
+            if (!vehicle.getIsForHuman() && vehicle.getIsActive() && !randomVehiclesForFirstRound.contains(vehicle)) {
                 randomVehiclesForFirstRound.add(vehicle);
             }
         }
@@ -389,7 +419,7 @@ public class WarMechanic {
         WarVehicle randomVehicle = null;
         boolean found = false;
         while (!found) {
-            int randomIndex = random.nextInt(0, vehicles.size() + 1);
+            int randomIndex = random.nextInt(0, vehicles.size());
             WarVehicle vehicle = vehicles.get(randomIndex);
             if (!vehicle.getIsForHuman() && vehicle.getIsActive()) {
                 randomVehicle = vehicle;
@@ -418,6 +448,5 @@ public class WarMechanic {
     public Integer getComputerScore() {
         return computerScore;
     }
-
 
 }

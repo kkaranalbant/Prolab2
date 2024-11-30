@@ -5,6 +5,7 @@ import java.awt.*;
 import prolab2.model.WarVehicle;
 
 public class VehicleCardPanel extends JPanel {
+
     private final WarVehicle vehicle;
     private boolean isSelected;
     private boolean isPlayerCard;
@@ -26,6 +27,9 @@ public class VehicleCardPanel extends JPanel {
             return;
         }
 
+        JLabel idLabel = new JLabel(String.valueOf(vehicle.getId()));
+        idLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         JLabel nameLabel = new JLabel(vehicle.getName());
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
@@ -42,6 +46,8 @@ public class VehicleCardPanel extends JPanel {
         JLabel levelLabel = new JLabel("Level: " + vehicle.getLevelPoint());
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        add(Box.createRigidArea(new Dimension(0, 5)));
+        add(idLabel);
         add(Box.createRigidArea(new Dimension(0, 5)));
         add(nameLabel);
         add(Box.createRigidArea(new Dimension(0, 5)));
@@ -75,13 +81,13 @@ public class VehicleCardPanel extends JPanel {
             g.setColor(new Color(50, 50, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
-            g.drawString("WAR CARD", getWidth()/2 - 30, getHeight()/2);
+            g.drawString("WAR CARD", getWidth() / 2 - 30, getHeight() / 2);
 
             if (!vehicle.getIsActive()) {
                 g.setColor(new Color(100, 100, 100, 150));
                 g.fillRect(0, 0, getWidth(), getHeight());
                 g.setColor(Color.RED);
-                g.drawString("ELIMINATED", getWidth()/2 - 35, getHeight()/2 + 20);
+                g.drawString("ELIMINATED", getWidth() / 2 - 35, getHeight() / 2 + 20);
             }
             return;
         }

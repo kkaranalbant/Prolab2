@@ -1,16 +1,25 @@
 package prolab2.gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import prolab2.model.WarVehicle;
 import prolab2.service.WarMechanic;
-import prolab2.exception.NotActiveVehicleChoosingException;
-import prolab2.exception.VehicleChoosingNumberException;
 
 public class GameFrame extends JFrame {
+
     private final WarMechanic warMechanic;
     private JPanel playerCardsPanel;
     private JPanel computerCardsPanel;
@@ -21,12 +30,15 @@ public class GameFrame extends JFrame {
     private List<WarVehicle> selectedCards;
     private List<VehicleCardPanel> playerCardPanels;
     private List<VehicleCardPanel> computerCardPanels;
+    private boolean firstUpdatingFlag;
 
     public GameFrame(WarMechanic warMechanic) {
         this.warMechanic = warMechanic;
         this.selectedCards = new ArrayList<>();
         this.playerCardPanels = new ArrayList<>();
         this.computerCardPanels = new ArrayList<>();
+
+        firstUpdatingFlag = true;
 
         setTitle("War Vehicles Card Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,8 +106,24 @@ public class GameFrame extends JFrame {
             }
         }
 
-        playerScoreLabel.setText("Player Score: " + warMechanic.getHumanScore());
-        computerScoreLabel.setText("Computer Score: " + warMechanic.getComputerScore());
+        if (!firstUpdatingFlag) {
+            WarVehicle newVehicleForComputer = warMechanic.createWarVehicleForComputer(1).get(0);
+            WarVehicle newVehicleForHuman = warMechanic.createWarVehicleForHuman(1).get(0);
+
+            VehicleCardPanel humanCardPanel = new VehicleCardPanel(newVehicleForHuman, true);
+            humanCardPanel.addMouseListener(new CardClickListener(humanCardPanel));
+            playerCardPanels.add(humanCardPanel);
+            playerCardsPanel.add(humanCardPanel);
+
+            VehicleCardPanel computerCardPanel = new VehicleCardPanel(newVehicleForComputer, false);
+            computerCardPanels.add(computerCardPanel);
+            computerCardsPanel.add(computerCardPanel);
+
+            playerScoreLabel.setText("Player Score: " + warMechanic.getHumanScore());
+            computerScoreLabel.setText("Computer Score: " + warMechanic.getComputerScore());
+        } else {
+            firstUpdatingFlag = false;
+        }
 
         revalidate();
         repaint();
@@ -123,10 +151,9 @@ public class GameFrame extends JFrame {
             warMechanic.war(selectedCards, computerCards);
             updateBattleArea(selectedCards, computerCards);
 
-            // Check if game is over
-            if (warMechanic.isWarOverByStepNumber() ||
-                    warMechanic.isWarOverByVehiclesForHuman() ||
-                    warMechanic.isWarOverByVehiclesForComputer()) {
+            if (warMechanic.isWarOverByStepNumber()
+                    || warMechanic.isWarOverByVehiclesForHuman()
+                    || warMechanic.isWarOverByVehiclesForComputer()) {
 
                 JOptionPane.showMessageDialog(this, warMechanic.getWarResultMessage());
                 System.exit(0);
@@ -164,6 +191,7 @@ public class GameFrame extends JFrame {
     }
 
     private class CardClickListener extends MouseAdapter {
+
         private final VehicleCardPanel cardPanel;
 
         public CardClickListener(VehicleCardPanel cardPanel) {
